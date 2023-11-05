@@ -16,17 +16,9 @@ const PostDetails = () => {
   const navigate = useNavigate();
   const { user } = useUserContext();
 
-  // if (!id) return null;
+  if (!id) return null;
 
   const { data: post, isLoading: isPostLoading } = useGetPostById(id);
-
-  // if (!post) {
-  //   return (
-  //     <div className="w-full h-full flex-center">
-  //       <Loader />
-  //     </div>
-  //   );
-  // }
 
   const { data: userPosts, isLoading: isUserPostLoading } = useGetUserPosts(
     post?.creator.$id
@@ -44,6 +36,14 @@ const PostDetails = () => {
     deletePost({ postId: id, imageId: post?.imageId });
     navigate(-1);
   };
+
+  if (!post) {
+    return (
+      <div className="w-full h-full flex-center">
+        <Loader />
+      </div>
+    );
+  }
 
   return (
     <div className="post_details-container">
