@@ -1,8 +1,8 @@
 import { useGetUserById } from "@/lib/react-query/queriesAndMutations";
-import { useState } from "react";
+// import { useState } from "react";
 import { Link } from "react-router-dom";
-import CommentForm from "../forms/CommentForm";
-import { Input } from "../ui/input";
+// import CommentForm from "../forms/CommentForm";
+// import { Input } from "../ui/input";
 import { usePostContext } from "@/context/PostContext";
 
 type CommentCardProps = {

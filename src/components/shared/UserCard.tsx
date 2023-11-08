@@ -1,7 +1,7 @@
 import { useUserContext } from "@/context/AuthContext";
 import { Models } from "appwrite";
 import { Link } from "react-router-dom";
-import { Button } from "../ui/button";
+// import { Button } from "../ui/button";
 import FollowButton from "./FollowButton";
 
 type UserCardProps = {

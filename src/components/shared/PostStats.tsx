@@ -8,8 +8,8 @@ import { checkIsLiked } from "@/lib/utils";
 import { Models } from "appwrite";
 import React, { useEffect, useState } from "react";
 import Loader from "./Loader";
-import { Link } from "react-router-dom";
-import { Button } from "../ui/button";
+// import { Link } from "react-router-dom";
+// import { Button } from "../ui/button";
 import { usePostContext } from "@/context/PostContext";
 
 type PostStatsProps = {
