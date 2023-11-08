@@ -5,7 +5,7 @@ import React, {
   useState,
 } from "react";
 
-type IContextPost = {};
+// type IContextPost = {};
 
 export const INITIAL_POST = {};
 

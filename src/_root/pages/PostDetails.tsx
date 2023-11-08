@@ -12,16 +12,12 @@ import {
 } from "@/lib/react-query/queriesAndMutations";
 import { multiFormatDateString } from "@/lib/utils";
 import { Models } from "appwrite";
-import { useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 
 const PostDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { user } = useUserContext();
-
-  const [isReplying, setIsReplying] = useState(false);
-  const [commentId, setCommentId] = useState("");
 
   if (!id) return null;
 
@@ -159,11 +155,7 @@ const PostDetails = () => {
               </ul>
             </div>
             <div className="w-full">
-              <PostStats
-                post={post}
-                userId={user.id}
-                setIsReplying={setIsReplying}
-              />
+              <PostStats post={post} userId={user.id} />
             </div>
             {post.comments.map((comment: Models.Document) => (
               <CommentCard
@@ -171,8 +163,6 @@ const PostDetails = () => {
                 userId={comment.userId}
                 postId={post.$id}
                 comment={comment.comment}
-                setIsReplying={setIsReplying}
-                setCommentId={setCommentId}
               />
             ))}
 
@@ -180,8 +170,6 @@ const PostDetails = () => {
               userId={user.id}
               postId={post.$id}
               imageUrl={user.imageUrl}
-              isReplying={isReplying}
-              commentId={commentId}
             />
           </div>
         </div>
