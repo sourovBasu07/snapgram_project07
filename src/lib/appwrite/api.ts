@@ -542,14 +542,14 @@ export async function postComment(
   }
 }
 
-export async function getComments(postId: string) {
-  try {
-    const comments = await databases.getDocument(
-      appwriteConfig.databaseId,
-      appwriteConfig.postsCollectionId,
-      postId
-    );
-  } catch (error) {
-    console.log(error);
-  }
-}
+// export async function getComments(postId: string) {
+//   try {
+//     const comments = await databases.getDocument(
+//       appwriteConfig.databaseId,
+//       appwriteConfig.postsCollectionId,
+//       postId
+//     );
+//   } catch (error) {
+//     console.log(error);
+//   }
+// }

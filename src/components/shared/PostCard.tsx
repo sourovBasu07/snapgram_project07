@@ -3,7 +3,7 @@ import { Models } from "appwrite";
 import { Link } from "react-router-dom";
 import { multiFormatDateString } from "@/lib/utils";
 import PostStats from "./PostStats";
-import CommentCard from "../cards/CommentCard";
+// import CommentCard from "../cards/CommentCard";
 import CommentForm from "../forms/CommentForm";
 
 type PostCardProps = {
