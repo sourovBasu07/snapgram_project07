@@ -1,3 +1,5 @@
+import CommentCard from "@/components/cards/CommentCard";
+import CommentForm from "@/components/forms/CommentForm";
 import GridPostList from "@/components/shared/GridPostList";
 import Loader from "@/components/shared/Loader";
 import PostStats from "@/components/shared/PostStats";
@@ -9,6 +11,8 @@ import {
   useGetUserPosts,
 } from "@/lib/react-query/queriesAndMutations";
 import { multiFormatDateString } from "@/lib/utils";
+import { Models } from "appwrite";
+import { useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 
 const PostDetails = () => {
@@ -16,9 +20,14 @@ const PostDetails = () => {
   const navigate = useNavigate();
   const { user } = useUserContext();
 
+  const [isReplying, setIsReplying] = useState(false);
+  const [commentId, setCommentId] = useState("");
+
   if (!id) return null;
 
   const { data: post, isLoading: isPostLoading } = useGetPostById(id);
+
+  console.log(post);
 
   const { data: userPosts, isLoading: isUserPostLoading } = useGetUserPosts(
     post?.creator.$id
@@ -37,13 +46,16 @@ const PostDetails = () => {
     navigate(-1);
   };
 
-  if (!post) {
-    return (
-      <div className="w-full h-full flex-center">
-        <Loader />
-      </div>
-    );
-  }
+  console.log(user.id);
+  console.log(post?.creator.$id);
+
+  // if (!post) {
+  //   return (
+  //     <div className="w-full h-full flex-center">
+  //       <Loader />
+  //     </div>
+  //   );
+  // }
 
   return (
     <div className="post_details-container">
@@ -95,7 +107,11 @@ const PostDetails = () => {
                 </div>
               </Link>
 
-              <div className="flex-center gap-4">
+              <div
+                className={`flex-center gap-4 ${
+                  user.id !== post?.creator.$id ? "hidden" : ""
+                }`}
+              >
                 <Link
                   to={`/update-post/${post.$id}`}
                   className={`${user.id !== post?.creator.$id && "hidden"}`}
@@ -111,7 +127,7 @@ const PostDetails = () => {
                 <Button
                   variant="ghost"
                   className={`post_details-delete_btn ${
-                    user.id !== post?.creator.$id && "hidden"
+                    user.id !== post?.creator.$id && "!hidden"
                   }`}
                   onClick={handleDeletePost}
                 >
@@ -128,9 +144,7 @@ const PostDetails = () => {
                 </Button>
               </div>
             </div>
-
             <hr className="w-full border border-dark-4/80" />
-
             <div className="flex flex-col flex-1 w-full small-medium lg:base-regular">
               <p>{post?.caption}</p>
               <ul className="flex gap-1 mt-2">
@@ -144,10 +158,31 @@ const PostDetails = () => {
                 ))}
               </ul>
             </div>
-
             <div className="w-full">
-              <PostStats post={post} userId={user.id} />
+              <PostStats
+                post={post}
+                userId={user.id}
+                setIsReplying={setIsReplying}
+              />
             </div>
+            {post.comments.map((comment: Models.Document) => (
+              <CommentCard
+                key={comment.$id}
+                userId={comment.userId}
+                postId={post.$id}
+                comment={comment.comment}
+                setIsReplying={setIsReplying}
+                setCommentId={setCommentId}
+              />
+            ))}
+
+            <CommentForm
+              userId={user.id}
+              postId={post.$id}
+              imageUrl={user.imageUrl}
+              isReplying={isReplying}
+              commentId={commentId}
+            />
           </div>
         </div>
       )}

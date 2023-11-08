@@ -3,6 +3,8 @@ import { Models } from "appwrite";
 import { Link } from "react-router-dom";
 import { multiFormatDateString } from "@/lib/utils";
 import PostStats from "./PostStats";
+import CommentCard from "../cards/CommentCard";
+import CommentForm from "../forms/CommentForm";
 
 type PostCardProps = {
   post: Models.Document;
@@ -10,6 +12,8 @@ type PostCardProps = {
 
 const PostCard = ({ post }: PostCardProps) => {
   const { user } = useUserContext();
+
+  console.log(post);
 
   if (!post.creator) return;
 
@@ -71,6 +75,21 @@ const PostCard = ({ post }: PostCardProps) => {
       </Link>
 
       <PostStats post={post} userId={user.id} />
+
+      {post.comments.length > 0 && (
+        <Link
+          to={`/posts/${post.$id}`}
+          className="inline-flex mt-5 hover:underline"
+        >
+          View all {post.comments.length} comments
+        </Link>
+      )}
+
+      <CommentForm
+        postId={post.$id}
+        userId={user.id}
+        imageUrl={user.imageUrl}
+      />
     </div>
   );
 };

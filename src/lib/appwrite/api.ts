@@ -480,3 +480,76 @@ export async function updateUser(user: IUpdateUser) {
     console.log(error);
   }
 }
+
+export async function followUser(userId: string, followingId: string) {
+  try {
+    const followedUser = await databases.createDocument(
+      appwriteConfig.databaseId,
+      appwriteConfig.followsCollectionId,
+      ID.unique(),
+      {
+        userId,
+        followingId,
+      }
+    );
+
+    if (!followedUser) throw Error;
+
+    return followedUser;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function unfollowUser(followedId: string) {
+  try {
+    const status = await databases.deleteDocument(
+      appwriteConfig.databaseId,
+      appwriteConfig.followsCollectionId,
+      followedId
+    );
+
+    if (!status) throw Error;
+
+    return { status: "OK" };
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function postComment(
+  userId: string,
+  postId: string,
+  comment: string
+) {
+  try {
+    const postedComment = await databases.createDocument(
+      appwriteConfig.databaseId,
+      appwriteConfig.commentsCollectionId,
+      ID.unique(),
+      {
+        userId,
+        postId,
+        comment,
+      }
+    );
+
+    if (!postedComment) throw Error;
+
+    return postedComment;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function getComments(postId: string) {
+  try {
+    const comments = await databases.getDocument(
+      appwriteConfig.databaseId,
+      appwriteConfig.postsCollectionId,
+      postId
+    );
+  } catch (error) {
+    console.log(error);
+  }
+}

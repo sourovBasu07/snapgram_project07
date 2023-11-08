@@ -2,6 +2,7 @@ import { useUserContext } from "@/context/AuthContext";
 import { Models } from "appwrite";
 import { Link } from "react-router-dom";
 import { Button } from "../ui/button";
+import FollowButton from "./FollowButton";
 
 type UserCardProps = {
   user: Models.Document;
@@ -31,9 +32,7 @@ const UserCard = ({ user }: UserCardProps) => {
         </div>
       </Link>
 
-      <Button type="button" size="sm" className="shad-button_primary px-5">
-        Follow
-      </Button>
+      <FollowButton userId={loggedUser.id} profileId={user.$id} />
     </div>
   );
 };

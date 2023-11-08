@@ -10,6 +10,7 @@ import {
   createUserAccount,
   deletePost,
   deleteSavedPost,
+  followUser,
   getCurrentUser,
   getInfinitePosts,
   getPostById,
@@ -18,10 +19,12 @@ import {
   getUserPosts,
   getUsers,
   likePost,
+  postComment,
   savePost,
   searchPosts,
   signOutAccount,
   signinAccount,
+  unfollowUser,
   updatePost,
   updateUser,
 } from "../appwrite/api";
@@ -236,5 +239,37 @@ export const useUpdateUser = () => {
         queryKey: [QUERY_KEYS.GET_USER_BY_ID, data?.$id],
       });
     },
+  });
+};
+
+export const useFollowUser = () => {
+  return useMutation({
+    mutationFn: ({
+      userId,
+      followingId,
+    }: {
+      userId: string;
+      followingId: string;
+    }) => followUser(userId, followingId),
+  });
+};
+
+export const useUnfollowUser = () => {
+  return useMutation({
+    mutationFn: (followedId: string) => unfollowUser(followedId),
+  });
+};
+
+export const usePostComment = () => {
+  return useMutation({
+    mutationFn: ({
+      userId,
+      postId,
+      comment,
+    }: {
+      userId: string;
+      postId: string;
+      comment: string;
+    }) => postComment(userId, postId, comment),
   });
 };

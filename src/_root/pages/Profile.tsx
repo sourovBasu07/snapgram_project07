@@ -1,7 +1,7 @@
+import FollowButton from "@/components/shared/FollowButton";
 import GridPostList from "@/components/shared/GridPostList";
 import LikedPosts from "@/components/shared/LikedPosts";
 import Loader from "@/components/shared/Loader";
-import { Button } from "@/components/ui/button";
 import { useUserContext } from "@/context/AuthContext";
 import { useGetUserById } from "@/lib/react-query/queriesAndMutations";
 import {
@@ -30,7 +30,11 @@ const Profile = () => {
   const { pathname } = useLocation();
   const { user: loggedInUser } = useUserContext();
 
-  const { data: currentProfile } = useGetUserById(id || "");
+  if (!id) {
+    return null;
+  }
+
+  const { data: currentProfile } = useGetUserById(id);
 
   if (!currentProfile) {
     return (
@@ -98,30 +102,27 @@ const Profile = () => {
             </div>
 
             <div className={`${loggedInUser.id === id && "hidden"}`}>
-              <Button type="button" className="shad-button_primary px-8">
-                Follow
-              </Button>
+              <FollowButton profileId={id} userId={loggedInUser.id} />
             </div>
           </div>
         </div>
       </div>
-
-      {currentProfile.$id === loggedInUser.id && (
-        <div className="flex w-full max-w-5xl">
-          <Link
-            to={`/profile/${id}`}
-            className={`profile-tab rounded-l-lg ${
-              pathname === `/profile/${id}` && "!bg-dark-3"
-            }`}
-          >
-            <img
-              src="/assets/icons/posts.svg"
-              alt="posts"
-              width={20}
-              height={20}
-            />
-            Posts
-          </Link>
+      <div className="flex w-full max-w-5xl">
+        <Link
+          to={`/profile/${id}`}
+          className={`profile-tab rounded-l-lg ${
+            pathname === `/profile/${id}` && "!bg-dark-3"
+          }`}
+        >
+          <img
+            src="/assets/icons/posts.svg"
+            alt="posts"
+            width={20}
+            height={20}
+          />
+          Posts
+        </Link>
+        {currentProfile.$id === loggedInUser.id && (
           <Link
             to={`/profile/${id}/liked-posts`}
             className={`profile-tab rounded-r-lg ${
@@ -136,9 +137,8 @@ const Profile = () => {
             />
             Liked Posts
           </Link>
-        </div>
-      )}
-
+        )}
+      </div>
       <Routes>
         <Route
           index
@@ -151,7 +151,6 @@ const Profile = () => {
           <Route path="/liked-posts" element={<LikedPosts />} />
         )}
       </Routes>
-
       <Outlet />
     </div>
   );

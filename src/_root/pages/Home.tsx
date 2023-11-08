@@ -33,7 +33,7 @@ const Home = () => {
     );
   }
 
-  console.log(posts);
+  // console.log(posts);
 
   return (
     <div className="flex flex-1">
